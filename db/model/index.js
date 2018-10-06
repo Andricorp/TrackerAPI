@@ -1,41 +1,41 @@
-const mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost/test');
+const mongoose = require("mongoose");
+
+
+// mongoose.connect("mongodb://localhost/Diary");
+// const Diary = require('../connect')
 
 const Schema = mongoose.Schema;
 const db = mongoose.connection;
 
-// const userSchema = require('./track')(Schema);
-// const User = require('./track')(mongoose, Schema)
-const Track = require('./track')(mongoose, Schema)
-
-
-// userSchema = new Schema({
-//     email: String,
-//     password: String,
-//     name: String,
-//     phones: [String],
-// });
-// const User = mongoose.model('User', userSchema)
-
+const Trip = require("./trip")(mongoose, Schema);
+const Track = require("./track")(mongoose, Schema);
+const Photo = require("./photo")(mongoose, Schema);
 
 async function fillDB() {
 
-    // var vasya = new User({
-    //     email: "vasya@sample.com",
-    //     password: "123",
-    //     name: "Vasisualiy Poopkine",
-    //     phone: ["101", "102", "103"]
-    // })
-    var sifrGenerator = new Track({
-        file: "some file"
-    })
+  let track = new Track({
+    file: [123.34, 3443.4545, 45456.34535]
+  });
+  let photo = new Photo({
+    description: "Nice photo!",
 
-    return await sifrGenerator.save()
-    // return await vasya.save()
+  });
+  let trip = new Trip({
+    description: "That was amasing Trip!"
+  });
+  await track.save(function(err, track, affected){
+    console.log(arguments);
+  });
+  await trip.save();
+  await photo.save();
 }
+fillDB();
+
+
 module.exports.data = {
-    db,
-    // User,
-    Track,
-    fillDB
-}
+  db,
+  Track,
+  Trip,
+  Photo,
+  fillDB
+};
